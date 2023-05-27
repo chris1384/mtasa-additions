@@ -2,7 +2,8 @@ local loadedPlayers = {}
 
 function functionWrapper(sourceRes, funcName, aclAllowed, luaName, luaLine, ...)
 	local args = {...}
-	if args[2] == root then
+	local target = args[2]
+	if target == root then
 		for k,v in ipairs(getElementsByType("player")) do
 			if loadedPlayers[v] then
 				triggerClientEvent(v, "chatMessage:serverWrap", resourceRoot, args[1], args[3], args[4], args[5], args[6])
@@ -11,7 +12,11 @@ function functionWrapper(sourceRes, funcName, aclAllowed, luaName, luaLine, ...)
 			end
 		end
 	else
-		triggerClientEvent(args[2], "chatMessage:serverWrap", resourceRoot, args[1], args[3], args[4], args[5], args[6])
+		if loadedPlayers[target] then 
+			triggerClientEvent(target, "chatMessage:serverWrap", resourceRoot, args[1], args[3], args[4], args[5], args[6])
+		else
+			outputChatBox(args[1], target, args[3], args[4], args[5], args[6])
+		end
 	end
 	return "skip"
 end

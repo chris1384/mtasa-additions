@@ -12,3 +12,7 @@ function functionWrapper(sourceRes, funcName, aclAllowed, luaName, luaLine, ...)
 	return true
 end
 addDebugHook("preFunction", functionWrapper, {"outputChatBox"})
+
+addEventHandler("onClientResourceStart", resourceRoot, function()
+	triggerServerEvent(localPlayer, "chatMessage:playerLoaded", localPlayer)
+end)

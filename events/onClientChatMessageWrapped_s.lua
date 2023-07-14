@@ -11,7 +11,17 @@ function functionWrapper(sourceRes, funcName, aclAllowed, luaName, luaLine, ...)
 				outputChatBox(args[1], v, args[3], args[4], args[5], args[6])
 			end
 		end
-	else
+	elseif type(target) == "table" then
+		for k,v in ipairs(target) do
+			if v and isElement(v) then
+				if loadedPlayers[v] then 
+					triggerClientEvent(v, "chatMessage:serverWrap", resourceRoot, args[1], args[3], args[4], args[5], args[6])
+				else
+					outputChatBox(args[1], v, args[3], args[4], args[5], args[6])
+				end
+			end
+		end
+	elseif type(target) == "userdata" and getElementType(target) == "player" then
 		if loadedPlayers[target] then 
 			triggerClientEvent(target, "chatMessage:serverWrap", resourceRoot, args[1], args[3], args[4], args[5], args[6])
 		else
